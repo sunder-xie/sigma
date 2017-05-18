@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tqmall.sigma.dao.PersonalInfoMapper">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultMap" type="com.tqmall.sigma.entity.PersonalInfoDO">
+		<!--自增ID-->
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<!--是否删除,N:未删除，Y:删除-->
+		<result column="is_deleted" property="isDeleted"  jdbcType="VARCHAR" />
+		<!--记录创建时间-->
+		<result column="gmt_create" property="gmtCreate"  jdbcType="TIMESTAMP" />
+		<!--记录修改时间,如果时间是1970年则表示纪录未修改-->
+		<result column="gmt_modified" property="gmtModified"  jdbcType="TIMESTAMP" />
+		<!--创建人，0表示无创建人值-->
+		<result column="creator" property="creator"  jdbcType="INTEGER" />
+		<!--修改人,如果为0则表示纪录未修改-->
+		<result column="modifier" property="modifier"  jdbcType="INTEGER" />
+		<!--会员ID-->
+		<result column="member_id" property="memberId"  jdbcType="INTEGER" />
+		<!--真实姓名-->
+		<result column="real_name" property="realName"  jdbcType="VARCHAR" />
+		<!--证件类型（1:身份证 2:护照 3:军官证 4:回乡证 5:台胞证 6:警官证 7:士兵证 99:其它证件）-->
+		<result column="identity_type" property="identityType"  jdbcType="INTEGER" />
+		<!--证件号码-->
+		<result column="identity_no" property="identityNo"  jdbcType="VARCHAR" />
+		<!--实名认证时间-->
+		<result column="real_name_time" property="realNameTime"  jdbcType="TIMESTAMP" />
+		<!--是否进行实名认证（0:否 1:是）-->
+		<result column="is_identity_checked" property="isIdentityChecked"  jdbcType="INTEGER" />
+		<!--是否已设置支付密码（0:否 1:是）-->
+		<result column="is_set_pay_pwd" property="isSetPayPwd"  jdbcType="INTEGER" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id,is_deleted,gmt_create,gmt_modified,creator,
+		modifier,member_id,real_name,identity_type,identity_no,
+		real_name_time,is_identity_checked,is_set_pay_pwd
+	</sql>
+
+	<!-- 动态条件 -->
+	<sql id="BaseCondition">
+		<where>
+			<if test="id != null">
+				 AND id=#{id,jdbcType=INTEGER }
+			</if>
+			<if test="isDeleted != null">
+				 AND is_deleted=#{isDeleted,jdbcType=VARCHAR }
+			</if>
+			<if test="gmtCreate != null">
+				 AND gmt_create=#{gmtCreate,jdbcType=TIMESTAMP }
+			</if>
+			<if test="gmtModified != null">
+				 AND gmt_modified=#{gmtModified,jdbcType=TIMESTAMP }
+			</if>
+			<if test="creator != null">
+				 AND creator=#{creator,jdbcType=INTEGER }
+			</if>
+			<if test="modifier != null">
+				 AND modifier=#{modifier,jdbcType=INTEGER }
+			</if>
+			<if test="memberId != null">
+				 AND member_id=#{memberId,jdbcType=INTEGER }
+			</if>
+			<if test="realName != null">
+				 AND real_name=#{realName,jdbcType=VARCHAR }
+			</if>
+			<if test="identityType != null">
+				 AND identity_type=#{identityType,jdbcType=INTEGER }
+			</if>
+			<if test="identityNo != null">
+				 AND identity_no=#{identityNo,jdbcType=VARCHAR }
+			</if>
+			<if test="realNameTime != null">
+				 AND real_name_time=#{realNameTime,jdbcType=TIMESTAMP }
+			</if>
+			<if test="isIdentityChecked != null">
+				 AND is_identity_checked=#{isIdentityChecked,jdbcType=INTEGER }
+			</if>
+			<if test="isSetPayPwd != null">
+				 AND is_set_pay_pwd=#{isSetPayPwd,jdbcType=INTEGER }
+			</if>
+		</where>
+	</sql>
+
+	<!-- 根据动态条件查询语句（根据BaseCondition查询语句） -->
+	<sql id="SelectByBaseConditionSql" >
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM db_personal_info
+		 <include refid="BaseCondition"/>
+	</sql>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM db_personal_info
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</delete>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.tqmall.sigma.entity.PersonalInfoDO" useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO db_personal_info
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="creator != null">
+				 creator,
+			</if>
+			<if test="modifier != null">
+				 modifier,
+			</if>
+			<if test="memberId != null">
+				 member_id,
+			</if>
+			<if test="realName != null">
+				 real_name,
+			</if>
+			<if test="identityType != null">
+				 identity_type,
+			</if>
+			<if test="identityNo != null">
+				 identity_no,
+			</if>
+			<if test="realNameTime != null">
+				 real_name_time,
+			</if>
+			<if test="isIdentityChecked != null">
+				 is_identity_checked,
+			</if>
+			<if test="isSetPayPwd != null">
+				 is_set_pay_pwd,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id,jdbcType=INTEGER },
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted,jdbcType=VARCHAR },
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate,jdbcType=TIMESTAMP },
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified,jdbcType=TIMESTAMP },
+			</if>
+			<if test="creator!=null">
+				 #{creator,jdbcType=INTEGER },
+			</if>
+			<if test="modifier!=null">
+				 #{modifier,jdbcType=INTEGER },
+			</if>
+			<if test="memberId!=null">
+				 #{memberId,jdbcType=INTEGER },
+			</if>
+			<if test="realName!=null">
+				 #{realName,jdbcType=VARCHAR },
+			</if>
+			<if test="identityType!=null">
+				 #{identityType,jdbcType=INTEGER },
+			</if>
+			<if test="identityNo!=null">
+				 #{identityNo,jdbcType=VARCHAR },
+			</if>
+			<if test="realNameTime!=null">
+				 #{realNameTime,jdbcType=TIMESTAMP },
+			</if>
+			<if test="isIdentityChecked!=null">
+				 #{isIdentityChecked,jdbcType=INTEGER },
+			</if>
+			<if test="isSetPayPwd!=null">
+				 #{isSetPayPwd,jdbcType=INTEGER },
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM db_personal_info
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</select>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.tqmall.sigma.entity.PersonalInfoDO">
+		 UPDATE db_personal_info
+ 		 <set> 
+			<if test="isDeleted != null">
+				 is_deleted = #{isDeleted,jdbcType=VARCHAR },
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create = #{gmtCreate,jdbcType=TIMESTAMP },
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified = #{gmtModified,jdbcType=TIMESTAMP },
+			</if>
+			<if test="creator != null">
+				 creator = #{creator,jdbcType=INTEGER },
+			</if>
+			<if test="modifier != null">
+				 modifier = #{modifier,jdbcType=INTEGER },
+			</if>
+			<if test="memberId != null">
+				 member_id = #{memberId,jdbcType=INTEGER },
+			</if>
+			<if test="realName != null">
+				 real_name = #{realName,jdbcType=VARCHAR },
+			</if>
+			<if test="identityType != null">
+				 identity_type = #{identityType,jdbcType=INTEGER },
+			</if>
+			<if test="identityNo != null">
+				 identity_no = #{identityNo,jdbcType=VARCHAR },
+			</if>
+			<if test="realNameTime != null">
+				 real_name_time = #{realNameTime,jdbcType=TIMESTAMP },
+			</if>
+			<if test="isIdentityChecked != null">
+				 is_identity_checked = #{isIdentityChecked,jdbcType=INTEGER },
+			</if>
+			<if test="isSetPayPwd != null">
+				 is_set_pay_pwd = #{isSetPayPwd,jdbcType=INTEGER },
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</update>
+
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="com.tqmall.sigma.entity.PersonalInfoDO">
+		 INSERT INTO db_personal_info
+ 		(
+		 <include refid="Base_Column_List" />
+		) 
+		 VALUES 
+		 <foreach collection="personalInfoDOList" item="item" index="index" separator=",">
+ 			(
+			#{item.id,jdbcType=INTEGER },
+			#{item.isDeleted,jdbcType=VARCHAR },
+			#{item.gmtCreate,jdbcType=TIMESTAMP },
+			#{item.gmtModified,jdbcType=TIMESTAMP },
+			#{item.creator,jdbcType=INTEGER },
+			#{item.modifier,jdbcType=INTEGER },
+			#{item.memberId,jdbcType=INTEGER },
+			#{item.realName,jdbcType=VARCHAR },
+			#{item.identityType,jdbcType=INTEGER },
+			#{item.identityNo,jdbcType=VARCHAR },
+			#{item.realNameTime,jdbcType=TIMESTAMP },
+			#{item.isIdentityChecked,jdbcType=INTEGER },
+			#{item.isSetPayPwd,jdbcType=INTEGER }
+			)
+		</foreach>
+	</insert>
+
+	<!-- 根据动态条件查询总数目（根据BaseCondition查询总数目） -->
+	<select id="countByBaseCondition" parameterType="java.util.Map" resultType="java.lang.Integer">
+		 SELECT
+		 count(*)
+		 FROM db_personal_info
+		 <include refid="BaseCondition"/>
+	</select>
+
+	<!-- 根据动态条件查询（根据BaseCondition查询） -->
+	<select id="selectByBaseConditionPageable" resultMap="BaseResultMap" parameterType="java.util.Map">
+		<include refid="SelectByBaseConditionSql"/>
+		<if test="orderStr != null">
+			order by #{orderStr}
+				<if test="orderStyle!=null">
+					#{orderStyle}
+				</if>
+		</if>
+		<if test="start != null and limit != null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+
+	<!-- 批量更新 -->
+	<update id="batchUpdateById" parameterType="com.tqmall.sigma.entity.PersonalInfoDO">
+		update db_personal_info
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="id =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.id!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.id,jdbcType=INTEGER }
+					</if>
+					<if test="item.id==null">
+						when #{item.id,jdbcType=INTEGER} then id
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="is_deleted =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.isDeleted!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.isDeleted,jdbcType=VARCHAR }
+					</if>
+					<if test="item.isDeleted==null">
+						when #{item.id,jdbcType=INTEGER} then is_deleted
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="gmt_create =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.gmtCreate!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.gmtCreate,jdbcType=TIMESTAMP }
+					</if>
+					<if test="item.gmtCreate==null">
+						when #{item.id,jdbcType=INTEGER} then gmt_create
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="gmt_modified =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.gmtModified!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.gmtModified,jdbcType=TIMESTAMP }
+					</if>
+					<if test="item.gmtModified==null">
+						when #{item.id,jdbcType=INTEGER} then gmt_modified
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="creator =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.creator!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.creator,jdbcType=INTEGER }
+					</if>
+					<if test="item.creator==null">
+						when #{item.id,jdbcType=INTEGER} then creator
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="modifier =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.modifier!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.modifier,jdbcType=INTEGER }
+					</if>
+					<if test="item.modifier==null">
+						when #{item.id,jdbcType=INTEGER} then modifier
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="member_id =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.memberId!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.memberId,jdbcType=INTEGER }
+					</if>
+					<if test="item.memberId==null">
+						when #{item.id,jdbcType=INTEGER} then member_id
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="real_name =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.realName!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.realName,jdbcType=VARCHAR }
+					</if>
+					<if test="item.realName==null">
+						when #{item.id,jdbcType=INTEGER} then real_name
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="identity_type =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.identityType!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.identityType,jdbcType=INTEGER }
+					</if>
+					<if test="item.identityType==null">
+						when #{item.id,jdbcType=INTEGER} then identity_type
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="identity_no =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.identityNo!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.identityNo,jdbcType=VARCHAR }
+					</if>
+					<if test="item.identityNo==null">
+						when #{item.id,jdbcType=INTEGER} then identity_no
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="real_name_time =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.realNameTime!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.realNameTime,jdbcType=TIMESTAMP }
+					</if>
+					<if test="item.realNameTime==null">
+						when #{item.id,jdbcType=INTEGER} then real_name_time
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="is_identity_checked =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.isIdentityChecked!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.isIdentityChecked,jdbcType=INTEGER }
+					</if>
+					<if test="item.isIdentityChecked==null">
+						when #{item.id,jdbcType=INTEGER} then is_identity_checked
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="is_set_pay_pwd =case id" suffix="end,">
+				<foreach collection="personalInfoDOList" item="item" index="index">
+					<if test="item.isSetPayPwd!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.isSetPayPwd,jdbcType=INTEGER }
+					</if>
+					<if test="item.isSetPayPwd==null">
+						when #{item.id,jdbcType=INTEGER} then is_set_pay_pwd
+					</if>
+				</foreach>
+			</trim>
+
+		</trim>
+		where
+		id IN
+		<foreach collection="personalInfoDOList" separator="," item="item" index="index" open="(" close=")">
+			#{item.id,jdbcType=INTEGER}
+		</foreach>
+	</update>
+
+    <select id="selectByMemberId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from db_personal_info
+        where member_id = #{memberId}
+        and is_deleted = 'N'
+    </select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       		http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       		http://www.springframework.org/schema/aop
+       		http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+
+    <!-- redis异常处理 -->
+    <!--<bean id="redisClientInterceptor" class="com.tqmall.sigma.biz.redis.interceptor.RedisClientInterceptor"/>-->
+    <!--<aop:config proxy-target-class="false">-->
+    <!--<aop:pointcut id="redisClientPointcut" expression="execution(* com.tqmall.sigma.biz.redis.*.*(..))"/>-->
+    <!--<aop:advisor advice-ref="redisClientInterceptor" pointcut-ref="redisClientPointcut"/>-->
+    <!--</aop:config>-->
+
+
+    <!-- redis缓存 -->
+    <bean id="redisCacheInterceptor" class="com.tqmall.sigma.biz.redis.interceptor.RedisCacheInterceptor"/>
+    <aop:config proxy-target-class="false">
+        <aop:pointcut id="redisCachePointcut"
+                      expression="execution(* com.tqmall.sigma.biz..*.*(..))
+                      and !execution(* com.tqmall.sigma.biz.redis..*.*(..))"/>
+        <aop:advisor advice-ref="redisCacheInterceptor" pointcut-ref="redisCachePointcut"/>
+    </aop:config>
+
+    <!--异常拦截 统一处理 -->
+    <bean id="resultServiceWrapper" class="com.tqmall.sigma.biz.aop.ResultServiceWrapper"/>
+    <aop:config proxy-target-class="false">
+        <!--定义切点-->
+        <aop:pointcut id="resultControlWrapper"
+                      expression="@annotation(org.springframework.web.bind.annotation.ResponseBody)
+                      and execution(com.tqmall.core.common.entity.Result *.*(..))"/>
+        <!--定义切面-->
+        <!--切面(advisor)通常由两部分组成：切点(pointcut)，增强(advice)（引用(introduction)）-->
+        <aop:advisor advice-ref="resultServiceWrapper" pointcut-ref="resultControlWrapper" order="30"/>
+    </aop:config>
+</beans>

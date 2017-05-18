@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tqmall.sigma.dao.BankSupportMapper">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultMap" type="com.tqmall.sigma.entity.BankSupportDO">
+		<!--自增ID-->
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<!--是否删除,N:未删除，Y:删除-->
+		<result column="is_deleted" property="isDeleted"  jdbcType="VARCHAR" />
+		<!--记录创建时间-->
+		<result column="gmt_create" property="gmtCreate"  jdbcType="TIMESTAMP" />
+		<!--记录修改时间,如果时间是1970年则表示纪录未修改-->
+		<result column="gmt_modified" property="gmtModified"  jdbcType="TIMESTAMP" />
+		<!--创建人，0表示无创建人值-->
+		<result column="creator" property="creator"  jdbcType="INTEGER" />
+		<!--修改人,如果为0则表示纪录未修改-->
+		<result column="modifier" property="modifier"  jdbcType="INTEGER" />
+		<!--银行名称-->
+		<result column="bank_name" property="bankName"  jdbcType="VARCHAR" />
+		<!--银行代码-->
+		<result column="bank_code" property="bankCode"  jdbcType="VARCHAR" />
+		<!--是否支持信用卡（0:否 1:是）-->
+		<result column="is_support_credit" property="isSupportCredit"  jdbcType="INTEGER" />
+		<!--是否支持借记卡（0:否 1:是）-->
+		<result column="is_support_debit" property="isSupportDebit"  jdbcType="INTEGER" />
+		<!--业务类型编码-->
+		<result column="biz_type" property="bizType"  jdbcType="VARCHAR" />
+		<!--银行图标app端-->
+		<result column="bank_icon_app" property="bankIconApp"  jdbcType="VARCHAR" />
+		<!--银行图标web端-->
+		<result column="bank_icon_web" property="bankIconWeb"  jdbcType="VARCHAR" />
+		<!--排序规则:升序-->
+		<result column="sort_order" property="sortOrder"  jdbcType="INTEGER" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id,is_deleted,gmt_create,gmt_modified,creator,
+		modifier,bank_name,bank_code,is_support_credit,is_support_debit,
+		biz_type,bank_icon_app,bank_icon_web,sort_order
+	</sql>
+
+	<!-- 动态条件 -->
+	<sql id="BaseCondition">
+		<where>
+			<if test="id != null">
+				 AND id=#{id,jdbcType=INTEGER }
+			</if>
+			<if test="isDeleted != null">
+				 AND is_deleted=#{isDeleted,jdbcType=VARCHAR }
+			</if>
+			<if test="gmtCreate != null">
+				 AND gmt_create=#{gmtCreate,jdbcType=TIMESTAMP }
+			</if>
+			<if test="gmtModified != null">
+				 AND gmt_modified=#{gmtModified,jdbcType=TIMESTAMP }
+			</if>
+			<if test="creator != null">
+				 AND creator=#{creator,jdbcType=INTEGER }
+			</if>
+			<if test="modifier != null">
+				 AND modifier=#{modifier,jdbcType=INTEGER }
+			</if>
+			<if test="bankName != null">
+				 AND bank_name=#{bankName,jdbcType=VARCHAR }
+			</if>
+			<if test="bankCode != null">
+				 AND bank_code=#{bankCode,jdbcType=VARCHAR }
+			</if>
+			<if test="isSupportCredit != null">
+				 AND is_support_credit=#{isSupportCredit,jdbcType=INTEGER }
+			</if>
+			<if test="isSupportDebit != null">
+				 AND is_support_debit=#{isSupportDebit,jdbcType=INTEGER }
+			</if>
+			<if test="bizType != null">
+				 AND biz_type=#{bizType,jdbcType=VARCHAR }
+			</if>
+			<if test="bankIconApp != null">
+				 AND bank_icon_app=#{bankIconApp,jdbcType=VARCHAR }
+			</if>
+			<if test="bankIconWeb != null">
+				 AND bank_icon_web=#{bankIconWeb,jdbcType=VARCHAR }
+			</if>
+			<if test="sortOrder != null">
+				 AND sort_order=#{sortOrder,jdbcType=INTEGER }
+			</if>
+		</where>
+	</sql>
+
+	<!-- 根据动态条件查询语句（根据BaseCondition查询语句） -->
+	<sql id="SelectByBaseConditionSql" >
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM db_bank_support
+		 <include refid="BaseCondition"/>
+	</sql>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM db_bank_support
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</delete>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.tqmall.sigma.entity.BankSupportDO" useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO db_bank_support
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="creator != null">
+				 creator,
+			</if>
+			<if test="modifier != null">
+				 modifier,
+			</if>
+			<if test="bankName != null">
+				 bank_name,
+			</if>
+			<if test="bankCode != null">
+				 bank_code,
+			</if>
+			<if test="isSupportCredit != null">
+				 is_support_credit,
+			</if>
+			<if test="isSupportDebit != null">
+				 is_support_debit,
+			</if>
+			<if test="bizType != null">
+				 biz_type,
+			</if>
+			<if test="bankIconApp != null">
+				 bank_icon_app,
+			</if>
+			<if test="bankIconWeb != null">
+				 bank_icon_web,
+			</if>
+			<if test="sortOrder != null">
+				 sort_order,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id,jdbcType=INTEGER },
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted,jdbcType=VARCHAR },
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate,jdbcType=TIMESTAMP },
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified,jdbcType=TIMESTAMP },
+			</if>
+			<if test="creator!=null">
+				 #{creator,jdbcType=INTEGER },
+			</if>
+			<if test="modifier!=null">
+				 #{modifier,jdbcType=INTEGER },
+			</if>
+			<if test="bankName!=null">
+				 #{bankName,jdbcType=VARCHAR },
+			</if>
+			<if test="bankCode!=null">
+				 #{bankCode,jdbcType=VARCHAR },
+			</if>
+			<if test="isSupportCredit!=null">
+				 #{isSupportCredit,jdbcType=INTEGER },
+			</if>
+			<if test="isSupportDebit!=null">
+				 #{isSupportDebit,jdbcType=INTEGER },
+			</if>
+			<if test="bizType!=null">
+				 #{bizType,jdbcType=VARCHAR },
+			</if>
+			<if test="bankIconApp!=null">
+				 #{bankIconApp,jdbcType=VARCHAR },
+			</if>
+			<if test="bankIconWeb!=null">
+				 #{bankIconWeb,jdbcType=VARCHAR },
+			</if>
+			<if test="sortOrder!=null">
+				 #{sortOrder,jdbcType=INTEGER },
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM db_bank_support
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</select>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.tqmall.sigma.entity.BankSupportDO">
+		 UPDATE db_bank_support
+ 		 <set> 
+			<if test="isDeleted != null">
+				 is_deleted = #{isDeleted,jdbcType=VARCHAR },
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create = #{gmtCreate,jdbcType=TIMESTAMP },
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified = #{gmtModified,jdbcType=TIMESTAMP },
+			</if>
+			<if test="creator != null">
+				 creator = #{creator,jdbcType=INTEGER },
+			</if>
+			<if test="modifier != null">
+				 modifier = #{modifier,jdbcType=INTEGER },
+			</if>
+			<if test="bankName != null">
+				 bank_name = #{bankName,jdbcType=VARCHAR },
+			</if>
+			<if test="bankCode != null">
+				 bank_code = #{bankCode,jdbcType=VARCHAR },
+			</if>
+			<if test="isSupportCredit != null">
+				 is_support_credit = #{isSupportCredit,jdbcType=INTEGER },
+			</if>
+			<if test="isSupportDebit != null">
+				 is_support_debit = #{isSupportDebit,jdbcType=INTEGER },
+			</if>
+			<if test="bizType != null">
+				 biz_type = #{bizType,jdbcType=VARCHAR },
+			</if>
+			<if test="bankIconApp != null">
+				 bank_icon_app = #{bankIconApp,jdbcType=VARCHAR },
+			</if>
+			<if test="bankIconWeb != null">
+				 bank_icon_web = #{bankIconWeb,jdbcType=VARCHAR },
+			</if>
+			<if test="sortOrder != null">
+				 sort_order = #{sortOrder,jdbcType=INTEGER },
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</update>
+
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="com.tqmall.sigma.entity.BankSupportDO">
+		 INSERT INTO db_bank_support
+ 		(
+		 <include refid="Base_Column_List" />
+		) 
+		 VALUES 
+		 <foreach collection="bankSupportDOList" item="item" index="index" separator=",">
+ 			(
+			#{item.id,jdbcType=INTEGER },
+			#{item.isDeleted,jdbcType=VARCHAR },
+			#{item.gmtCreate,jdbcType=TIMESTAMP },
+			#{item.gmtModified,jdbcType=TIMESTAMP },
+			#{item.creator,jdbcType=INTEGER },
+			#{item.modifier,jdbcType=INTEGER },
+			#{item.bankName,jdbcType=VARCHAR },
+			#{item.bankCode,jdbcType=VARCHAR },
+			#{item.isSupportCredit,jdbcType=INTEGER },
+			#{item.isSupportDebit,jdbcType=INTEGER },
+			#{item.bizType,jdbcType=VARCHAR },
+			#{item.bankIconApp,jdbcType=VARCHAR },
+			#{item.bankIconWeb,jdbcType=VARCHAR },
+			#{item.sortOrder,jdbcType=INTEGER }
+			)
+		</foreach>
+	</insert>
+
+	<!-- 根据动态条件查询总数目（根据BaseCondition查询总数目） -->
+	<select id="countByBaseCondition" parameterType="java.util.Map" resultType="java.lang.Integer">
+		 SELECT
+		 count(*)
+		 FROM db_bank_support
+		 <include refid="BaseCondition"/>
+	</select>
+
+	<!-- 根据动态条件查询（根据BaseCondition查询） -->
+	<select id="selectByBaseConditionPageable" resultMap="BaseResultMap" parameterType="java.util.Map">
+		<include refid="SelectByBaseConditionSql"/>
+		<if test="orderStr != null">
+			order by #{orderStr}
+				<if test="orderStyle!=null">
+					#{orderStyle}
+				</if>
+		</if>
+		<if test="start != null and limit != null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+
+	<!-- 批量更新 -->
+	<update id="batchUpdateById" parameterType="com.tqmall.sigma.entity.BankSupportDO">
+		update db_bank_support
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="id =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.id!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.id,jdbcType=INTEGER }
+					</if>
+					<if test="item.id==null">
+						when #{item.id,jdbcType=INTEGER} then id
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="is_deleted =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.isDeleted!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.isDeleted,jdbcType=VARCHAR }
+					</if>
+					<if test="item.isDeleted==null">
+						when #{item.id,jdbcType=INTEGER} then is_deleted
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="gmt_create =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.gmtCreate!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.gmtCreate,jdbcType=TIMESTAMP }
+					</if>
+					<if test="item.gmtCreate==null">
+						when #{item.id,jdbcType=INTEGER} then gmt_create
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="gmt_modified =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.gmtModified!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.gmtModified,jdbcType=TIMESTAMP }
+					</if>
+					<if test="item.gmtModified==null">
+						when #{item.id,jdbcType=INTEGER} then gmt_modified
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="creator =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.creator!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.creator,jdbcType=INTEGER }
+					</if>
+					<if test="item.creator==null">
+						when #{item.id,jdbcType=INTEGER} then creator
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="modifier =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.modifier!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.modifier,jdbcType=INTEGER }
+					</if>
+					<if test="item.modifier==null">
+						when #{item.id,jdbcType=INTEGER} then modifier
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="bank_name =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.bankName!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.bankName,jdbcType=VARCHAR }
+					</if>
+					<if test="item.bankName==null">
+						when #{item.id,jdbcType=INTEGER} then bank_name
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="bank_code =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.bankCode!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.bankCode,jdbcType=VARCHAR }
+					</if>
+					<if test="item.bankCode==null">
+						when #{item.id,jdbcType=INTEGER} then bank_code
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="is_support_credit =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.isSupportCredit!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.isSupportCredit,jdbcType=INTEGER }
+					</if>
+					<if test="item.isSupportCredit==null">
+						when #{item.id,jdbcType=INTEGER} then is_support_credit
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="is_support_debit =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.isSupportDebit!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.isSupportDebit,jdbcType=INTEGER }
+					</if>
+					<if test="item.isSupportDebit==null">
+						when #{item.id,jdbcType=INTEGER} then is_support_debit
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="biz_type =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.bizType!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.bizType,jdbcType=VARCHAR }
+					</if>
+					<if test="item.bizType==null">
+						when #{item.id,jdbcType=INTEGER} then biz_type
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="bank_icon_app =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.bankIconApp!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.bankIconApp,jdbcType=VARCHAR }
+					</if>
+					<if test="item.bankIconApp==null">
+						when #{item.id,jdbcType=INTEGER} then bank_icon_app
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="bank_icon_web =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.bankIconWeb!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.bankIconWeb,jdbcType=VARCHAR }
+					</if>
+					<if test="item.bankIconWeb==null">
+						when #{item.id,jdbcType=INTEGER} then bank_icon_web
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="sort_order =case id" suffix="end,">
+				<foreach collection="bankSupportDOList" item="item" index="index">
+					<if test="item.sortOrder!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.sortOrder,jdbcType=INTEGER }
+					</if>
+					<if test="item.sortOrder==null">
+						when #{item.id,jdbcType=INTEGER} then sort_order
+					</if>
+				</foreach>
+			</trim>
+
+		</trim>
+		where
+		id IN
+		<foreach collection="bankSupportDOList" separator="," item="item" index="index" open="(" close=")">
+			#{item.id,jdbcType=INTEGER}
+		</foreach>
+	</update>
+</mapper>

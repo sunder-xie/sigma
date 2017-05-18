@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tqmall.sigma.dao.CompanyInfoMapper">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultMap" type="com.tqmall.sigma.entity.CompanyInfoDO">
+		<!--自增ID-->
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<!--是否删除,N:未删除，Y:删除-->
+		<result column="is_deleted" property="isDeleted"  jdbcType="VARCHAR" />
+		<!--记录创建时间-->
+		<result column="gmt_create" property="gmtCreate"  jdbcType="TIMESTAMP" />
+		<!--记录修改时间,如果时间是1970年则表示纪录未修改-->
+		<result column="gmt_modified" property="gmtModified"  jdbcType="TIMESTAMP" />
+		<!--创建人，0表示无创建人值-->
+		<result column="creator" property="creator"  jdbcType="INTEGER" />
+		<!--修改人,如果为0则表示纪录未修改-->
+		<result column="modifier" property="modifier"  jdbcType="INTEGER" />
+		<!--会员ID-->
+		<result column="member_id" property="memberId"  jdbcType="INTEGER" />
+		<!--企业名称-->
+		<result column="company_name" property="companyName"  jdbcType="VARCHAR" />
+		<!--企业地址-->
+		<result column="company_address" property="companyAddress"  jdbcType="VARCHAR" />
+		<!--营业执照号-->
+		<result column="business_license" property="businessLicense"  jdbcType="VARCHAR" />
+		<!--组织机构代码-->
+		<result column="organization_code" property="organizationCode"  jdbcType="VARCHAR" />
+		<!--联系电话-->
+		<result column="company_telephone" property="companyTelephone"  jdbcType="VARCHAR" />
+		<!--法人姓名-->
+		<result column="legal_name" property="legalName"  jdbcType="VARCHAR" />
+		<!--法人证件类型（1:身份证 2:护照 3:军官证 4:回乡证 5:台胞证 6:警官证 7:士兵证 99:其它证件）-->
+		<result column="identity_type" property="identityType"  jdbcType="INTEGER" />
+		<!--法人证件号码-->
+		<result column="legal_ids" property="legalIds"  jdbcType="VARCHAR" />
+		<!--法人手机号-->
+		<result column="legal_phone" property="legalPhone"  jdbcType="VARCHAR" />
+		<!--企业对公账户-->
+		<result column="account_no" property="accountNo"  jdbcType="VARCHAR" />
+		<!--开户银行名称-->
+		<result column="parent_bank_name" property="parentBankName"  jdbcType="VARCHAR" />
+		<!--开户行地区代码-->
+		<result column="bank_city_no" property="bankCityNo"  jdbcType="VARCHAR" />
+		<!--开户行支行名称-->
+		<result column="bank_name" property="bankName"  jdbcType="VARCHAR" />
+		<!--支付行号-->
+		<result column="union_bank" property="unionBank"  jdbcType="VARCHAR" />
+		<!--备注-->
+		<result column="company_remark" property="companyRemark"  jdbcType="VARCHAR" />
+		<!--云账户审核状态（0:待审核 2:审核成功 3:审核失败）-->
+		<result column="cloud_check_status" property="cloudCheckStatus"  jdbcType="INTEGER" />
+		<!--云账户审核时间-->
+		<result column="cloud_check_time" property="cloudCheckTime"  jdbcType="TIMESTAMP" />
+		<!--云账户审核失败原因-->
+		<result column="cloud_fail_reason" property="cloudFailReason"  jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id,is_deleted,gmt_create,gmt_modified,creator,
+		modifier,member_id,company_name,company_address,business_license,
+		organization_code,company_telephone,legal_name,identity_type,legal_ids,
+		legal_phone,account_no,parent_bank_name,bank_city_no,bank_name,
+		union_bank,company_remark,cloud_check_status,cloud_check_time,cloud_fail_reason
+		
+	</sql>
+
+	<!-- 动态条件 -->
+	<sql id="BaseCondition">
+		<where>
+			<if test="id != null">
+				 AND id=#{id,jdbcType=INTEGER }
+			</if>
+			<if test="isDeleted != null">
+				 AND is_deleted=#{isDeleted,jdbcType=VARCHAR }
+			</if>
+			<if test="gmtCreate != null">
+				 AND gmt_create=#{gmtCreate,jdbcType=TIMESTAMP }
+			</if>
+			<if test="gmtModified != null">
+				 AND gmt_modified=#{gmtModified,jdbcType=TIMESTAMP }
+			</if>
+			<if test="creator != null">
+				 AND creator=#{creator,jdbcType=INTEGER }
+			</if>
+			<if test="modifier != null">
+				 AND modifier=#{modifier,jdbcType=INTEGER }
+			</if>
+			<if test="memberId != null">
+				 AND member_id=#{memberId,jdbcType=INTEGER }
+			</if>
+			<if test="companyName != null">
+				 AND company_name=#{companyName,jdbcType=VARCHAR }
+			</if>
+			<if test="companyAddress != null">
+				 AND company_address=#{companyAddress,jdbcType=VARCHAR }
+			</if>
+			<if test="businessLicense != null">
+				 AND business_license=#{businessLicense,jdbcType=VARCHAR }
+			</if>
+			<if test="organizationCode != null">
+				 AND organization_code=#{organizationCode,jdbcType=VARCHAR }
+			</if>
+			<if test="companyTelephone != null">
+				 AND company_telephone=#{companyTelephone,jdbcType=VARCHAR }
+			</if>
+			<if test="legalName != null">
+				 AND legal_name=#{legalName,jdbcType=VARCHAR }
+			</if>
+			<if test="identityType != null">
+				 AND identity_type=#{identityType,jdbcType=INTEGER }
+			</if>
+			<if test="legalIds != null">
+				 AND legal_ids=#{legalIds,jdbcType=VARCHAR }
+			</if>
+			<if test="legalPhone != null">
+				 AND legal_phone=#{legalPhone,jdbcType=VARCHAR }
+			</if>
+			<if test="accountNo != null">
+				 AND account_no=#{accountNo,jdbcType=VARCHAR }
+			</if>
+			<if test="parentBankName != null">
+				 AND parent_bank_name=#{parentBankName,jdbcType=VARCHAR }
+			</if>
+			<if test="bankCityNo != null">
+				 AND bank_city_no=#{bankCityNo,jdbcType=VARCHAR }
+			</if>
+			<if test="bankName != null">
+				 AND bank_name=#{bankName,jdbcType=VARCHAR }
+			</if>
+			<if test="unionBank != null">
+				 AND union_bank=#{unionBank,jdbcType=VARCHAR }
+			</if>
+			<if test="companyRemark != null">
+				 AND company_remark=#{companyRemark,jdbcType=VARCHAR }
+			</if>
+			<if test="cloudCheckStatus != null">
+				 AND cloud_check_status=#{cloudCheckStatus,jdbcType=INTEGER }
+			</if>
+			<if test="cloudCheckTime != null">
+				 AND cloud_check_time=#{cloudCheckTime,jdbcType=TIMESTAMP }
+			</if>
+			<if test="cloudFailReason != null">
+				 AND cloud_fail_reason=#{cloudFailReason,jdbcType=VARCHAR }
+			</if>
+		</where>
+	</sql>
+
+	<!-- 根据动态条件查询语句（根据BaseCondition查询语句） -->
+	<sql id="SelectByBaseConditionSql" >
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM db_company_info
+		 <include refid="BaseCondition"/>
+	</sql>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM db_company_info
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</delete>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.tqmall.sigma.entity.CompanyInfoDO" useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO db_company_info
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="creator != null">
+				 creator,
+			</if>
+			<if test="modifier != null">
+				 modifier,
+			</if>
+			<if test="memberId != null">
+				 member_id,
+			</if>
+			<if test="companyName != null">
+				 company_name,
+			</if>
+			<if test="companyAddress != null">
+				 company_address,
+			</if>
+			<if test="businessLicense != null">
+				 business_license,
+			</if>
+			<if test="organizationCode != null">
+				 organization_code,
+			</if>
+			<if test="companyTelephone != null">
+				 company_telephone,
+			</if>
+			<if test="legalName != null">
+				 legal_name,
+			</if>
+			<if test="identityType != null">
+				 identity_type,
+			</if>
+			<if test="legalIds != null">
+				 legal_ids,
+			</if>
+			<if test="legalPhone != null">
+				 legal_phone,
+			</if>
+			<if test="accountNo != null">
+				 account_no,
+			</if>
+			<if test="parentBankName != null">
+				 parent_bank_name,
+			</if>
+			<if test="bankCityNo != null">
+				 bank_city_no,
+			</if>
+			<if test="bankName != null">
+				 bank_name,
+			</if>
+			<if test="unionBank != null">
+				 union_bank,
+			</if>
+			<if test="companyRemark != null">
+				 company_remark,
+			</if>
+			<if test="cloudCheckStatus != null">
+				 cloud_check_status,
+			</if>
+			<if test="cloudCheckTime != null">
+				 cloud_check_time,
+			</if>
+			<if test="cloudFailReason != null">
+				 cloud_fail_reason,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id,jdbcType=INTEGER },
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted,jdbcType=VARCHAR },
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate,jdbcType=TIMESTAMP },
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified,jdbcType=TIMESTAMP },
+			</if>
+			<if test="creator!=null">
+				 #{creator,jdbcType=INTEGER },
+			</if>
+			<if test="modifier!=null">
+				 #{modifier,jdbcType=INTEGER },
+			</if>
+			<if test="memberId!=null">
+				 #{memberId,jdbcType=INTEGER },
+			</if>
+			<if test="companyName!=null">
+				 #{companyName,jdbcType=VARCHAR },
+			</if>
+			<if test="companyAddress!=null">
+				 #{companyAddress,jdbcType=VARCHAR },
+			</if>
+			<if test="businessLicense!=null">
+				 #{businessLicense,jdbcType=VARCHAR },
+			</if>
+			<if test="organizationCode!=null">
+				 #{organizationCode,jdbcType=VARCHAR },
+			</if>
+			<if test="companyTelephone!=null">
+				 #{companyTelephone,jdbcType=VARCHAR },
+			</if>
+			<if test="legalName!=null">
+				 #{legalName,jdbcType=VARCHAR },
+			</if>
+			<if test="identityType!=null">
+				 #{identityType,jdbcType=INTEGER },
+			</if>
+			<if test="legalIds!=null">
+				 #{legalIds,jdbcType=VARCHAR },
+			</if>
+			<if test="legalPhone!=null">
+				 #{legalPhone,jdbcType=VARCHAR },
+			</if>
+			<if test="accountNo!=null">
+				 #{accountNo,jdbcType=VARCHAR },
+			</if>
+			<if test="parentBankName!=null">
+				 #{parentBankName,jdbcType=VARCHAR },
+			</if>
+			<if test="bankCityNo!=null">
+				 #{bankCityNo,jdbcType=VARCHAR },
+			</if>
+			<if test="bankName!=null">
+				 #{bankName,jdbcType=VARCHAR },
+			</if>
+			<if test="unionBank!=null">
+				 #{unionBank,jdbcType=VARCHAR },
+			</if>
+			<if test="companyRemark!=null">
+				 #{companyRemark,jdbcType=VARCHAR },
+			</if>
+			<if test="cloudCheckStatus!=null">
+				 #{cloudCheckStatus,jdbcType=INTEGER },
+			</if>
+			<if test="cloudCheckTime!=null">
+				 #{cloudCheckTime,jdbcType=TIMESTAMP },
+			</if>
+			<if test="cloudFailReason!=null">
+				 #{cloudFailReason,jdbcType=VARCHAR },
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM db_company_info
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</select>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.tqmall.sigma.entity.CompanyInfoDO">
+		 UPDATE db_company_info
+ 		 <set> 
+			<if test="isDeleted != null">
+				 is_deleted = #{isDeleted,jdbcType=VARCHAR },
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create = #{gmtCreate,jdbcType=TIMESTAMP },
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified = #{gmtModified,jdbcType=TIMESTAMP },
+			</if>
+			<if test="creator != null">
+				 creator = #{creator,jdbcType=INTEGER },
+			</if>
+			<if test="modifier != null">
+				 modifier = #{modifier,jdbcType=INTEGER },
+			</if>
+			<if test="memberId != null">
+				 member_id = #{memberId,jdbcType=INTEGER },
+			</if>
+			<if test="companyName != null">
+				 company_name = #{companyName,jdbcType=VARCHAR },
+			</if>
+			<if test="companyAddress != null">
+				 company_address = #{companyAddress,jdbcType=VARCHAR },
+			</if>
+			<if test="businessLicense != null">
+				 business_license = #{businessLicense,jdbcType=VARCHAR },
+			</if>
+			<if test="organizationCode != null">
+				 organization_code = #{organizationCode,jdbcType=VARCHAR },
+			</if>
+			<if test="companyTelephone != null">
+				 company_telephone = #{companyTelephone,jdbcType=VARCHAR },
+			</if>
+			<if test="legalName != null">
+				 legal_name = #{legalName,jdbcType=VARCHAR },
+			</if>
+			<if test="identityType != null">
+				 identity_type = #{identityType,jdbcType=INTEGER },
+			</if>
+			<if test="legalIds != null">
+				 legal_ids = #{legalIds,jdbcType=VARCHAR },
+			</if>
+			<if test="legalPhone != null">
+				 legal_phone = #{legalPhone,jdbcType=VARCHAR },
+			</if>
+			<if test="accountNo != null">
+				 account_no = #{accountNo,jdbcType=VARCHAR },
+			</if>
+			<if test="parentBankName != null">
+				 parent_bank_name = #{parentBankName,jdbcType=VARCHAR },
+			</if>
+			<if test="bankCityNo != null">
+				 bank_city_no = #{bankCityNo,jdbcType=VARCHAR },
+			</if>
+			<if test="bankName != null">
+				 bank_name = #{bankName,jdbcType=VARCHAR },
+			</if>
+			<if test="unionBank != null">
+				 union_bank = #{unionBank,jdbcType=VARCHAR },
+			</if>
+			<if test="companyRemark != null">
+				 company_remark = #{companyRemark,jdbcType=VARCHAR },
+			</if>
+			<if test="cloudCheckStatus != null">
+				 cloud_check_status = #{cloudCheckStatus,jdbcType=INTEGER },
+			</if>
+			<if test="cloudCheckTime != null">
+				 cloud_check_time = #{cloudCheckTime,jdbcType=TIMESTAMP },
+			</if>
+			<if test="cloudFailReason != null">
+				 cloud_fail_reason = #{cloudFailReason,jdbcType=VARCHAR },
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</update>
+
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="com.tqmall.sigma.entity.CompanyInfoDO">
+		 INSERT INTO db_company_info
+ 		(
+		 <include refid="Base_Column_List" />
+		) 
+		 VALUES 
+		 <foreach collection="companyInfoDOList" item="item" index="index" separator=",">
+ 			(
+			#{item.id,jdbcType=INTEGER },
+			#{item.isDeleted,jdbcType=VARCHAR },
+			#{item.gmtCreate,jdbcType=TIMESTAMP },
+			#{item.gmtModified,jdbcType=TIMESTAMP },
+			#{item.creator,jdbcType=INTEGER },
+			#{item.modifier,jdbcType=INTEGER },
+			#{item.memberId,jdbcType=INTEGER },
+			#{item.companyName,jdbcType=VARCHAR },
+			#{item.companyAddress,jdbcType=VARCHAR },
+			#{item.businessLicense,jdbcType=VARCHAR },
+			#{item.organizationCode,jdbcType=VARCHAR },
+			#{item.companyTelephone,jdbcType=VARCHAR },
+			#{item.legalName,jdbcType=VARCHAR },
+			#{item.identityType,jdbcType=INTEGER },
+			#{item.legalIds,jdbcType=VARCHAR },
+			#{item.legalPhone,jdbcType=VARCHAR },
+			#{item.accountNo,jdbcType=VARCHAR },
+			#{item.parentBankName,jdbcType=VARCHAR },
+			#{item.bankCityNo,jdbcType=VARCHAR },
+			#{item.bankName,jdbcType=VARCHAR },
+			#{item.unionBank,jdbcType=VARCHAR },
+			#{item.companyRemark,jdbcType=VARCHAR },
+			#{item.cloudCheckStatus,jdbcType=INTEGER },
+			#{item.cloudCheckTime,jdbcType=TIMESTAMP },
+			#{item.cloudFailReason,jdbcType=VARCHAR }
+			)
+		</foreach>
+	</insert>
+
+	<!-- 根据动态条件查询总数目（根据BaseCondition查询总数目） -->
+	<select id="countByBaseCondition" parameterType="java.util.Map" resultType="java.lang.Integer">
+		 SELECT
+		 count(*)
+		 FROM db_company_info
+		 <include refid="BaseCondition"/>
+	</select>
+
+	<!-- 根据动态条件查询（根据BaseCondition查询） -->
+	<select id="selectByBaseConditionPageable" resultMap="BaseResultMap" parameterType="java.util.Map">
+		<include refid="SelectByBaseConditionSql"/>
+		<if test="orderStr != null">
+			order by #{orderStr}
+				<if test="orderStyle!=null">
+					#{orderStyle}
+				</if>
+		</if>
+		<if test="start != null and limit != null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+
+	<!-- 批量更新 -->
+	<update id="batchUpdateById" parameterType="com.tqmall.sigma.entity.CompanyInfoDO">
+		update db_company_info
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="id =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.id!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.id,jdbcType=INTEGER }
+					</if>
+					<if test="item.id==null">
+						when #{item.id,jdbcType=INTEGER} then id
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="is_deleted =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.isDeleted!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.isDeleted,jdbcType=VARCHAR }
+					</if>
+					<if test="item.isDeleted==null">
+						when #{item.id,jdbcType=INTEGER} then is_deleted
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="gmt_create =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.gmtCreate!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.gmtCreate,jdbcType=TIMESTAMP }
+					</if>
+					<if test="item.gmtCreate==null">
+						when #{item.id,jdbcType=INTEGER} then gmt_create
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="gmt_modified =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.gmtModified!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.gmtModified,jdbcType=TIMESTAMP }
+					</if>
+					<if test="item.gmtModified==null">
+						when #{item.id,jdbcType=INTEGER} then gmt_modified
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="creator =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.creator!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.creator,jdbcType=INTEGER }
+					</if>
+					<if test="item.creator==null">
+						when #{item.id,jdbcType=INTEGER} then creator
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="modifier =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.modifier!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.modifier,jdbcType=INTEGER }
+					</if>
+					<if test="item.modifier==null">
+						when #{item.id,jdbcType=INTEGER} then modifier
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="member_id =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.memberId!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.memberId,jdbcType=INTEGER }
+					</if>
+					<if test="item.memberId==null">
+						when #{item.id,jdbcType=INTEGER} then member_id
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="company_name =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.companyName!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.companyName,jdbcType=VARCHAR }
+					</if>
+					<if test="item.companyName==null">
+						when #{item.id,jdbcType=INTEGER} then company_name
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="company_address =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.companyAddress!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.companyAddress,jdbcType=VARCHAR }
+					</if>
+					<if test="item.companyAddress==null">
+						when #{item.id,jdbcType=INTEGER} then company_address
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="business_license =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.businessLicense!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.businessLicense,jdbcType=VARCHAR }
+					</if>
+					<if test="item.businessLicense==null">
+						when #{item.id,jdbcType=INTEGER} then business_license
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="organization_code =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.organizationCode!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.organizationCode,jdbcType=VARCHAR }
+					</if>
+					<if test="item.organizationCode==null">
+						when #{item.id,jdbcType=INTEGER} then organization_code
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="company_telephone =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.companyTelephone!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.companyTelephone,jdbcType=VARCHAR }
+					</if>
+					<if test="item.companyTelephone==null">
+						when #{item.id,jdbcType=INTEGER} then company_telephone
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="legal_name =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.legalName!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.legalName,jdbcType=VARCHAR }
+					</if>
+					<if test="item.legalName==null">
+						when #{item.id,jdbcType=INTEGER} then legal_name
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="identity_type =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.identityType!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.identityType,jdbcType=INTEGER }
+					</if>
+					<if test="item.identityType==null">
+						when #{item.id,jdbcType=INTEGER} then identity_type
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="legal_ids =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.legalIds!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.legalIds,jdbcType=VARCHAR }
+					</if>
+					<if test="item.legalIds==null">
+						when #{item.id,jdbcType=INTEGER} then legal_ids
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="legal_phone =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.legalPhone!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.legalPhone,jdbcType=VARCHAR }
+					</if>
+					<if test="item.legalPhone==null">
+						when #{item.id,jdbcType=INTEGER} then legal_phone
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="account_no =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.accountNo!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.accountNo,jdbcType=VARCHAR }
+					</if>
+					<if test="item.accountNo==null">
+						when #{item.id,jdbcType=INTEGER} then account_no
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="parent_bank_name =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.parentBankName!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.parentBankName,jdbcType=VARCHAR }
+					</if>
+					<if test="item.parentBankName==null">
+						when #{item.id,jdbcType=INTEGER} then parent_bank_name
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="bank_city_no =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.bankCityNo!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.bankCityNo,jdbcType=VARCHAR }
+					</if>
+					<if test="item.bankCityNo==null">
+						when #{item.id,jdbcType=INTEGER} then bank_city_no
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="bank_name =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.bankName!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.bankName,jdbcType=VARCHAR }
+					</if>
+					<if test="item.bankName==null">
+						when #{item.id,jdbcType=INTEGER} then bank_name
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="union_bank =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.unionBank!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.unionBank,jdbcType=VARCHAR }
+					</if>
+					<if test="item.unionBank==null">
+						when #{item.id,jdbcType=INTEGER} then union_bank
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="company_remark =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.companyRemark!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.companyRemark,jdbcType=VARCHAR }
+					</if>
+					<if test="item.companyRemark==null">
+						when #{item.id,jdbcType=INTEGER} then company_remark
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="cloud_check_status =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.cloudCheckStatus!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.cloudCheckStatus,jdbcType=INTEGER }
+					</if>
+					<if test="item.cloudCheckStatus==null">
+						when #{item.id,jdbcType=INTEGER} then cloud_check_status
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="cloud_check_time =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.cloudCheckTime!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.cloudCheckTime,jdbcType=TIMESTAMP }
+					</if>
+					<if test="item.cloudCheckTime==null">
+						when #{item.id,jdbcType=INTEGER} then cloud_check_time
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="cloud_fail_reason =case id" suffix="end,">
+				<foreach collection="companyInfoDOList" item="item" index="index">
+					<if test="item.cloudFailReason!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.cloudFailReason,jdbcType=VARCHAR }
+					</if>
+					<if test="item.cloudFailReason==null">
+						when #{item.id,jdbcType=INTEGER} then cloud_fail_reason
+					</if>
+				</foreach>
+			</trim>
+
+		</trim>
+		where
+		id IN
+		<foreach collection="companyInfoDOList" separator="," item="item" index="index" open="(" close=")">
+			#{item.id,jdbcType=INTEGER}
+		</foreach>
+	</update>
+
+    <select id="selectByMemberId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from db_personal_info
+        where member_id = #{memberId}
+        and is_deleted = 'N'
+    </select>
+</mapper>

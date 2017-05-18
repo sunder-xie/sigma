@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config description="">
+    <group name="biz">
+
+        <property name="dubbo.registry.address" defaultValue="sw4KT8Ups"/>
+        <property name="dubbo.service.port" defaultValue="20881"/>
+        <property name="dubbo.service.version" defaultValue="1.0.0.dev"/>
+        <property name="uc.dubbo.consumer.version" defaultValue="1.0.0.daily"/>
+        <property name="finance.dubbo.consumer.version" defaultValue="1.0.0.daily"/>
+        <property name="redis.host" defaultValue="redis://MySQL_Server:root@127.0.0.1:6379/41"/>
+
+        <property name="tl.domain" defaultValue="http://"/>
+        <property name="tl.interface.version" defaultValue="1.0"/>
+        <property name="tl.sys.id" defaultValue="100009001000"/>
+        <property name="tl.account.set.no" defaultValue="12985739202038"/>
+        <property name="tl.certificate.password" defaultValue="900724"/>
+        <property name="tl.certificate" defaultValue="100009001000.pfx"/>
+
+        <property name="sigma.domain" defaultValue="xxx"/>
+
+        
+    </group>
+
+    <script>
+        <generate template="sigma-biz.properties.vm" destfile="sigma-biz.properties" charset="UTF-8"/>
+    </script>
+</config>

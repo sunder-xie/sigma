@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config description="">
+    <group name="jdbc">
+
+        <property name="sigma_jdbc_driver"
+                  defaultValue="com.mysql.jdbc.Driver"
+                  description="数据库驱动"/>
+        <property name="sigma_jdbc_url"
+                  defaultValue="jdbc:mysql://127.0.0.1:3306/sigma?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;tinyInt1isBit=false"
+                  description="数据库连接url"/>
+        <property name="sigma_jdbc_username"
+                  defaultValue="root"
+                  description="数据库连接用户名"/>
+        <property name="sigma_jdbc_password"
+                  defaultValue="root"
+                  description="数据库连接用户名"/>
+    </group>
+
+    <script>
+        <generate template="jdbc.properties.vm" destfile="jdbc.properties" charset="UTF-8"/>
+    </script>
+</config>

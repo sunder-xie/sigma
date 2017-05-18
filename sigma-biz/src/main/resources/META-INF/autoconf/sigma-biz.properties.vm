@@ -1,0 +1,18 @@
+dubbo.registry.address=${dubbo.registry.address}
+dubbo.service.port=${dubbo.service.port}
+dubbo.service.version=${dubbo.service.version}
+uc.dubbo.consumer.version=${uc.dubbo.consumer.version}
+finance.dubbo.consumer.version=${finance.dubbo.consumer.version}
+
+#redis 配置
+redis.host=${redis.host}
+
+# 通联支付相关配置
+tl.domain=${tl.domain}
+tl.interface.version=${tl.interface.version}
+tl.sys.id=${tl.sys.id}
+tl.account.set.no=${tl.account.set.no}
+tl.certificate.password=${tl.certificate.password}
+tl.certificate=${tl.certificate}
+
+sigma.domain=${sigma.domain}

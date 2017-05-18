@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tqmall.sigma.dao.PayOrderInfoMapper">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultMap" type="com.tqmall.sigma.entity.PayOrderInfoDO">
+		<!--自增ID-->
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<!--是否删除,N:未删除，Y:删除-->
+		<result column="is_deleted" property="isDeleted"  jdbcType="VARCHAR" />
+		<!--记录创建时间-->
+		<result column="gmt_create" property="gmtCreate"  jdbcType="TIMESTAMP" />
+		<!--记录修改时间,如果时间是1970年则表示纪录未修改-->
+		<result column="gmt_modified" property="gmtModified"  jdbcType="TIMESTAMP" />
+		<!--创建人，0表示无创建人值-->
+		<result column="creator" property="creator"  jdbcType="INTEGER" />
+		<!--修改人,如果为0则表示纪录未修改-->
+		<result column="modifier" property="modifier"  jdbcType="INTEGER" />
+		<!--当前支付订单号-->
+		<result column="pay_order_sn" property="payOrderSn"  jdbcType="VARCHAR" />
+		<!--淘汽业务订单号-->
+		<result column="biz_order_sn" property="bizOrderSn"  jdbcType="VARCHAR" />
+		<!--订单类型（1:充值订单 2:提现订单 3:消费订单 4:退款订单）-->
+		<result column="order_type" property="orderType"  jdbcType="INTEGER" />
+		<!--订单支付金额-->
+		<result column="pay_order_amount" property="payOrderAmount"  jdbcType="DECIMAL" />
+		<!--手续费-->
+		<result column="handing_fee" property="handingFee"  jdbcType="DECIMAL" />
+		<!--支付状态（0:未支付 1:支付中 2:已支付）-->
+		<result column="pay_status" property="payStatus"  jdbcType="INTEGER" />
+		<!--付款方ID-->
+		<result column="from_member_id" property="fromMemberId"  jdbcType="INTEGER" />
+		<!--付款方名称-->
+		<result column="from_member_name" property="fromMemberName"  jdbcType="VARCHAR" />
+		<!--收款方ID-->
+		<result column="to_member_id" property="toMemberId"  jdbcType="INTEGER" />
+		<!--收款方名称-->
+		<result column="to_member_name" property="toMemberName"  jdbcType="VARCHAR" />
+		<!--支付类型，参考fc_payment-->
+		<result column="pay_id" property="payId"  jdbcType="INTEGER" />
+		<!--外部平台ID-->
+		<result column="platform_id" property="platformId"  jdbcType="INTEGER" />
+		<!--云账户订单号-->
+		<result column="cloud_order_no" property="cloudOrderNo"  jdbcType="VARCHAR" />
+		<!--云账户交易编码-->
+		<result column="cloud_trade_no" property="cloudTradeNo"  jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id,is_deleted,gmt_create,gmt_modified,creator,
+		modifier,pay_order_sn,biz_order_sn,order_type,pay_order_amount,
+		handing_fee,pay_status,from_member_id,from_member_name,to_member_id,
+		to_member_name,pay_id,platform_id,cloud_order_no,cloud_trade_no
+		
+	</sql>
+
+	<!-- 动态条件 -->
+	<sql id="BaseCondition">
+		<where>
+			<if test="id != null">
+				 AND id=#{id,jdbcType=INTEGER }
+			</if>
+			<if test="isDeleted != null">
+				 AND is_deleted=#{isDeleted,jdbcType=VARCHAR }
+			</if>
+			<if test="gmtCreate != null">
+				 AND gmt_create=#{gmtCreate,jdbcType=TIMESTAMP }
+			</if>
+			<if test="gmtModified != null">
+				 AND gmt_modified=#{gmtModified,jdbcType=TIMESTAMP }
+			</if>
+			<if test="creator != null">
+				 AND creator=#{creator,jdbcType=INTEGER }
+			</if>
+			<if test="modifier != null">
+				 AND modifier=#{modifier,jdbcType=INTEGER }
+			</if>
+			<if test="payOrderSn != null">
+				 AND pay_order_sn=#{payOrderSn,jdbcType=VARCHAR }
+			</if>
+			<if test="bizOrderSn != null">
+				 AND biz_order_sn=#{bizOrderSn,jdbcType=VARCHAR }
+			</if>
+			<if test="orderType != null">
+				 AND order_type=#{orderType,jdbcType=INTEGER }
+			</if>
+			<if test="payOrderAmount != null">
+				 AND pay_order_amount=#{payOrderAmount,jdbcType=DECIMAL }
+			</if>
+			<if test="handingFee != null">
+				 AND handing_fee=#{handingFee,jdbcType=DECIMAL }
+			</if>
+			<if test="payStatus != null">
+				 AND pay_status=#{payStatus,jdbcType=INTEGER }
+			</if>
+			<if test="fromMemberId != null">
+				 AND from_member_id=#{fromMemberId,jdbcType=INTEGER }
+			</if>
+			<if test="fromMemberName != null">
+				 AND from_member_name=#{fromMemberName,jdbcType=VARCHAR }
+			</if>
+			<if test="toMemberId != null">
+				 AND to_member_id=#{toMemberId,jdbcType=INTEGER }
+			</if>
+			<if test="toMemberName != null">
+				 AND to_member_name=#{toMemberName,jdbcType=VARCHAR }
+			</if>
+			<if test="payId != null">
+				 AND pay_id=#{payId,jdbcType=INTEGER }
+			</if>
+			<if test="platformId != null">
+				 AND platform_id=#{platformId,jdbcType=INTEGER }
+			</if>
+			<if test="cloudOrderNo != null">
+				 AND cloud_order_no=#{cloudOrderNo,jdbcType=VARCHAR }
+			</if>
+			<if test="cloudTradeNo != null">
+				 AND cloud_trade_no=#{cloudTradeNo,jdbcType=VARCHAR }
+			</if>
+		</where>
+	</sql>
+
+	<!-- 根据动态条件查询语句（根据BaseCondition查询语句） -->
+	<sql id="SelectByBaseConditionSql" >
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM db_pay_order_info
+		 <include refid="BaseCondition"/>
+	</sql>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM db_pay_order_info
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</delete>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.tqmall.sigma.entity.PayOrderInfoDO" useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO db_pay_order_info
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="creator != null">
+				 creator,
+			</if>
+			<if test="modifier != null">
+				 modifier,
+			</if>
+			<if test="payOrderSn != null">
+				 pay_order_sn,
+			</if>
+			<if test="bizOrderSn != null">
+				 biz_order_sn,
+			</if>
+			<if test="orderType != null">
+				 order_type,
+			</if>
+			<if test="payOrderAmount != null">
+				 pay_order_amount,
+			</if>
+			<if test="handingFee != null">
+				 handing_fee,
+			</if>
+			<if test="payStatus != null">
+				 pay_status,
+			</if>
+			<if test="fromMemberId != null">
+				 from_member_id,
+			</if>
+			<if test="fromMemberName != null">
+				 from_member_name,
+			</if>
+			<if test="toMemberId != null">
+				 to_member_id,
+			</if>
+			<if test="toMemberName != null">
+				 to_member_name,
+			</if>
+			<if test="payId != null">
+				 pay_id,
+			</if>
+			<if test="platformId != null">
+				 platform_id,
+			</if>
+			<if test="cloudOrderNo != null">
+				 cloud_order_no,
+			</if>
+			<if test="cloudTradeNo != null">
+				 cloud_trade_no,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id,jdbcType=INTEGER },
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted,jdbcType=VARCHAR },
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate,jdbcType=TIMESTAMP },
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified,jdbcType=TIMESTAMP },
+			</if>
+			<if test="creator!=null">
+				 #{creator,jdbcType=INTEGER },
+			</if>
+			<if test="modifier!=null">
+				 #{modifier,jdbcType=INTEGER },
+			</if>
+			<if test="payOrderSn!=null">
+				 #{payOrderSn,jdbcType=VARCHAR },
+			</if>
+			<if test="bizOrderSn!=null">
+				 #{bizOrderSn,jdbcType=VARCHAR },
+			</if>
+			<if test="orderType!=null">
+				 #{orderType,jdbcType=INTEGER },
+			</if>
+			<if test="payOrderAmount!=null">
+				 #{payOrderAmount,jdbcType=DECIMAL },
+			</if>
+			<if test="handingFee!=null">
+				 #{handingFee,jdbcType=DECIMAL },
+			</if>
+			<if test="payStatus!=null">
+				 #{payStatus,jdbcType=INTEGER },
+			</if>
+			<if test="fromMemberId!=null">
+				 #{fromMemberId,jdbcType=INTEGER },
+			</if>
+			<if test="fromMemberName!=null">
+				 #{fromMemberName,jdbcType=VARCHAR },
+			</if>
+			<if test="toMemberId!=null">
+				 #{toMemberId,jdbcType=INTEGER },
+			</if>
+			<if test="toMemberName!=null">
+				 #{toMemberName,jdbcType=VARCHAR },
+			</if>
+			<if test="payId!=null">
+				 #{payId,jdbcType=INTEGER },
+			</if>
+			<if test="platformId!=null">
+				 #{platformId,jdbcType=INTEGER },
+			</if>
+			<if test="cloudOrderNo!=null">
+				 #{cloudOrderNo,jdbcType=VARCHAR },
+			</if>
+			<if test="cloudTradeNo!=null">
+				 #{cloudTradeNo,jdbcType=VARCHAR },
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM db_pay_order_info
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</select>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.tqmall.sigma.entity.PayOrderInfoDO">
+		 UPDATE db_pay_order_info
+ 		 <set> 
+			<if test="isDeleted != null">
+				 is_deleted = #{isDeleted,jdbcType=VARCHAR },
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create = #{gmtCreate,jdbcType=TIMESTAMP },
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified = #{gmtModified,jdbcType=TIMESTAMP },
+			</if>
+			<if test="creator != null">
+				 creator = #{creator,jdbcType=INTEGER },
+			</if>
+			<if test="modifier != null">
+				 modifier = #{modifier,jdbcType=INTEGER },
+			</if>
+			<if test="payOrderSn != null">
+				 pay_order_sn = #{payOrderSn,jdbcType=VARCHAR },
+			</if>
+			<if test="bizOrderSn != null">
+				 biz_order_sn = #{bizOrderSn,jdbcType=VARCHAR },
+			</if>
+			<if test="orderType != null">
+				 order_type = #{orderType,jdbcType=INTEGER },
+			</if>
+			<if test="payOrderAmount != null">
+				 pay_order_amount = #{payOrderAmount,jdbcType=DECIMAL },
+			</if>
+			<if test="handingFee != null">
+				 handing_fee = #{handingFee,jdbcType=DECIMAL },
+			</if>
+			<if test="payStatus != null">
+				 pay_status = #{payStatus,jdbcType=INTEGER },
+			</if>
+			<if test="fromMemberId != null">
+				 from_member_id = #{fromMemberId,jdbcType=INTEGER },
+			</if>
+			<if test="fromMemberName != null">
+				 from_member_name = #{fromMemberName,jdbcType=VARCHAR },
+			</if>
+			<if test="toMemberId != null">
+				 to_member_id = #{toMemberId,jdbcType=INTEGER },
+			</if>
+			<if test="toMemberName != null">
+				 to_member_name = #{toMemberName,jdbcType=VARCHAR },
+			</if>
+			<if test="payId != null">
+				 pay_id = #{payId,jdbcType=INTEGER },
+			</if>
+			<if test="platformId != null">
+				 platform_id = #{platformId,jdbcType=INTEGER },
+			</if>
+			<if test="cloudOrderNo != null">
+				 cloud_order_no = #{cloudOrderNo,jdbcType=VARCHAR },
+			</if>
+			<if test="cloudTradeNo != null">
+				 cloud_trade_no = #{cloudTradeNo,jdbcType=VARCHAR },
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id,jdbcType=INTEGER }
+	</update>
+
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="com.tqmall.sigma.entity.PayOrderInfoDO">
+		 INSERT INTO db_pay_order_info
+ 		(
+		 <include refid="Base_Column_List" />
+		) 
+		 VALUES 
+		 <foreach collection="payOrderInfoDOList" item="item" index="index" separator=",">
+ 			(
+			#{item.id,jdbcType=INTEGER },
+			#{item.isDeleted,jdbcType=VARCHAR },
+			#{item.gmtCreate,jdbcType=TIMESTAMP },
+			#{item.gmtModified,jdbcType=TIMESTAMP },
+			#{item.creator,jdbcType=INTEGER },
+			#{item.modifier,jdbcType=INTEGER },
+			#{item.payOrderSn,jdbcType=VARCHAR },
+			#{item.bizOrderSn,jdbcType=VARCHAR },
+			#{item.orderType,jdbcType=INTEGER },
+			#{item.payOrderAmount,jdbcType=DECIMAL },
+			#{item.handingFee,jdbcType=DECIMAL },
+			#{item.payStatus,jdbcType=INTEGER },
+			#{item.fromMemberId,jdbcType=INTEGER },
+			#{item.fromMemberName,jdbcType=VARCHAR },
+			#{item.toMemberId,jdbcType=INTEGER },
+			#{item.toMemberName,jdbcType=VARCHAR },
+			#{item.payId,jdbcType=INTEGER },
+			#{item.platformId,jdbcType=INTEGER },
+			#{item.cloudOrderNo,jdbcType=VARCHAR },
+			#{item.cloudTradeNo,jdbcType=VARCHAR }
+			)
+		</foreach>
+	</insert>
+
+	<!-- 根据动态条件查询总数目（根据BaseCondition查询总数目） -->
+	<select id="countByBaseCondition" parameterType="java.util.Map" resultType="java.lang.Integer">
+		 SELECT
+		 count(*)
+		 FROM db_pay_order_info
+		 <include refid="BaseCondition"/>
+	</select>
+
+	<!-- 根据动态条件查询（根据BaseCondition查询） -->
+	<select id="selectByBaseConditionPageable" resultMap="BaseResultMap" parameterType="java.util.Map">
+		<include refid="SelectByBaseConditionSql"/>
+		<if test="orderStr != null">
+			order by #{orderStr}
+				<if test="orderStyle!=null">
+					#{orderStyle}
+				</if>
+		</if>
+		<if test="start != null and limit != null">
+			limit #{start},#{limit}
+		</if>
+	</select>
+
+	<!-- 批量更新 -->
+	<update id="batchUpdateById" parameterType="com.tqmall.sigma.entity.PayOrderInfoDO">
+		update db_pay_order_info
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="id =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.id!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.id,jdbcType=INTEGER }
+					</if>
+					<if test="item.id==null">
+						when #{item.id,jdbcType=INTEGER} then id
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="is_deleted =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.isDeleted!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.isDeleted,jdbcType=VARCHAR }
+					</if>
+					<if test="item.isDeleted==null">
+						when #{item.id,jdbcType=INTEGER} then is_deleted
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="gmt_create =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.gmtCreate!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.gmtCreate,jdbcType=TIMESTAMP }
+					</if>
+					<if test="item.gmtCreate==null">
+						when #{item.id,jdbcType=INTEGER} then gmt_create
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="gmt_modified =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.gmtModified!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.gmtModified,jdbcType=TIMESTAMP }
+					</if>
+					<if test="item.gmtModified==null">
+						when #{item.id,jdbcType=INTEGER} then gmt_modified
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="creator =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.creator!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.creator,jdbcType=INTEGER }
+					</if>
+					<if test="item.creator==null">
+						when #{item.id,jdbcType=INTEGER} then creator
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="modifier =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.modifier!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.modifier,jdbcType=INTEGER }
+					</if>
+					<if test="item.modifier==null">
+						when #{item.id,jdbcType=INTEGER} then modifier
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="pay_order_sn =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.payOrderSn!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.payOrderSn,jdbcType=VARCHAR }
+					</if>
+					<if test="item.payOrderSn==null">
+						when #{item.id,jdbcType=INTEGER} then pay_order_sn
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="biz_order_sn =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.bizOrderSn!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.bizOrderSn,jdbcType=VARCHAR }
+					</if>
+					<if test="item.bizOrderSn==null">
+						when #{item.id,jdbcType=INTEGER} then biz_order_sn
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="order_type =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.orderType!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.orderType,jdbcType=INTEGER }
+					</if>
+					<if test="item.orderType==null">
+						when #{item.id,jdbcType=INTEGER} then order_type
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="pay_order_amount =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.payOrderAmount!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.payOrderAmount,jdbcType=DECIMAL }
+					</if>
+					<if test="item.payOrderAmount==null">
+						when #{item.id,jdbcType=INTEGER} then pay_order_amount
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="handing_fee =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.handingFee!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.handingFee,jdbcType=DECIMAL }
+					</if>
+					<if test="item.handingFee==null">
+						when #{item.id,jdbcType=INTEGER} then handing_fee
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="pay_status =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.payStatus!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.payStatus,jdbcType=INTEGER }
+					</if>
+					<if test="item.payStatus==null">
+						when #{item.id,jdbcType=INTEGER} then pay_status
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="from_member_id =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.fromMemberId!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.fromMemberId,jdbcType=INTEGER }
+					</if>
+					<if test="item.fromMemberId==null">
+						when #{item.id,jdbcType=INTEGER} then from_member_id
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="from_member_name =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.fromMemberName!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.fromMemberName,jdbcType=VARCHAR }
+					</if>
+					<if test="item.fromMemberName==null">
+						when #{item.id,jdbcType=INTEGER} then from_member_name
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="to_member_id =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.toMemberId!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.toMemberId,jdbcType=INTEGER }
+					</if>
+					<if test="item.toMemberId==null">
+						when #{item.id,jdbcType=INTEGER} then to_member_id
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="to_member_name =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.toMemberName!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.toMemberName,jdbcType=VARCHAR }
+					</if>
+					<if test="item.toMemberName==null">
+						when #{item.id,jdbcType=INTEGER} then to_member_name
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="pay_id =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.payId!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.payId,jdbcType=INTEGER }
+					</if>
+					<if test="item.payId==null">
+						when #{item.id,jdbcType=INTEGER} then pay_id
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="platform_id =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.platformId!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.platformId,jdbcType=INTEGER }
+					</if>
+					<if test="item.platformId==null">
+						when #{item.id,jdbcType=INTEGER} then platform_id
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="cloud_order_no =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.cloudOrderNo!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.cloudOrderNo,jdbcType=VARCHAR }
+					</if>
+					<if test="item.cloudOrderNo==null">
+						when #{item.id,jdbcType=INTEGER} then cloud_order_no
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="cloud_trade_no =case id" suffix="end,">
+				<foreach collection="payOrderInfoDOList" item="item" index="index">
+					<if test="item.cloudTradeNo!=null">
+						when #{item.id,jdbcType=INTEGER} then #{item.cloudTradeNo,jdbcType=VARCHAR }
+					</if>
+					<if test="item.cloudTradeNo==null">
+						when #{item.id,jdbcType=INTEGER} then cloud_trade_no
+					</if>
+				</foreach>
+			</trim>
+
+		</trim>
+		where
+		id IN
+		<foreach collection="payOrderInfoDOList" separator="," item="item" index="index" open="(" close=")">
+			#{item.id,jdbcType=INTEGER}
+		</foreach>
+	</update>
+</mapper>

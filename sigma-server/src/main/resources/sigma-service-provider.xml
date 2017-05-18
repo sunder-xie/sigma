@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+           http://code.alibabatech.com/schema/dubbo
+           http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!-- 依赖biz层 -->
+    <import resource="classpath*:biz-context.xml"/>
+    <import resource="classpath*:server-aop.xml"/>
+
+    <dubbo:provider timeout="60000"/>
+
+    <!-- 声明需要暴露的服务接口 -->
+    <!--<bean id="sigmaMemberService" class="com.tqmall.sigma.server.member.SigmaMemberServiceImpl"/>-->
+    <dubbo:service interface="com.tqmall.sigma.client.service.member.SigmaMemberService"
+                   ref="sigmaMemberService" version="${dubbo.service.version}" owner="jian.lin"/>
+
+</beans>

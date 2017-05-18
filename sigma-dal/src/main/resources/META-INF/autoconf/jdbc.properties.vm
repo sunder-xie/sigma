@@ -1,0 +1,6 @@
+#vm真实模板
+sigma.jdbc.driver=${sigma_jdbc_driver}
+sigma.jdbc.url=${sigma_jdbc_url}
+sigma.jdbc.username=${sigma_jdbc_username}
+sigma.jdbc.password=${sigma_jdbc_password}
+

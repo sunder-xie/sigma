@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		   http://www.springframework.org/schema/context
+		   http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		   http://code.alibabatech.com/schema/dubbo
+		   http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- order越小越先加载，此项目最小从10开始，方便后面插队，此处是20 -->
+    <context:property-placeholder order="20" ignore-unresolvable="true" location="classpath:sigma-biz.properties"/>
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="sigma" organization="dianshang" owner="rui.bai"/>
+    <!-- zk 自动寻找监控中心 -->
+    <dubbo:monitor protocol="registry"/>
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}"/>
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="${dubbo.service.port}"/>
+    <!-- 关闭dubbo启动校验依赖服务端是否正常 -->
+    <dubbo:consumer check="false"/>
+
+    <!-- 数据库层 -->
+    <import resource="classpath*:dal-context.xml"/>
+    <!-- redis -->
+    <import resource="redis-config.xml"/>
+
+    <import resource="biz-aop.xml"/>
+    
+    <!--dubbo-->
+    <import resource="dubbo-uc-consumer.xml"/>
+    <import resource="dubbo-finance-consumer.xml"/>
+</beans>
